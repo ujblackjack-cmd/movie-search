@@ -1,0 +1,474 @@
+[
+ {
+  "id": "sem-01",
+  "category": "semantic",
+  "query": "a man who cannot form new memories searches for the person who murdered his wife",
+  "gold": [
+   [
+    "Memento",
+    2000
+   ]
+  ]
+ },
+ {
+  "id": "sem-02",
+  "category": "semantic",
+  "query": "a thief who steals secrets by entering people's dreams is hired to plant an idea in a businessman's mind",
+  "gold": [
+   [
+    "Inception",
+    2010
+   ]
+  ]
+ },
+ {
+  "id": "sem-03",
+  "category": "semantic",
+  "query": "an insomniac office worker forms an underground fight club with a charismatic soap salesman",
+  "gold": [
+   [
+    "Fight Club",
+    1999
+   ]
+  ]
+ },
+ {
+  "id": "sem-04",
+  "category": "semantic",
+  "query": "a troubled boy who sees dead people is helped by a child psychologist",
+  "gold": [
+   [
+    "The Sixth Sense",
+    1999
+   ]
+  ]
+ },
+ {
+  "id": "sem-05",
+  "category": "semantic",
+  "query": "an aging crime family patriarch passes control of his empire to his reluctant youngest son",
+  "gold": [
+   [
+    "The Godfather",
+    1972
+   ]
+  ]
+ },
+ {
+  "id": "sem-06",
+  "category": "semantic",
+  "query": "two detectives hunt a serial killer who stages murders around the seven deadly sins",
+  "gold": [
+   [
+    "Se7en",
+    1995
+   ]
+  ]
+ },
+ {
+  "id": "sem-07",
+  "category": "semantic",
+  "query": "a blade runner hunts rogue replicants in a dystopian future Los Angeles",
+  "gold": [
+   [
+    "Blade Runner",
+    1982
+   ],
+   [
+    "Blade Runner 2049",
+    2017
+   ]
+  ]
+ },
+ {
+  "id": "sem-08",
+  "category": "semantic",
+  "query": "a young girl's parents are turned into pigs and she must work in a bathhouse for spirits to free them",
+  "gold": [
+   [
+    "Spirited Away",
+    2001
+   ]
+  ]
+ },
+ {
+  "id": "sem-09",
+  "category": "semantic",
+  "query": "a banker wrongly convicted of murder befriends a fellow inmate and plans his escape from prison",
+  "gold": [
+   [
+    "The Shawshank Redemption",
+    1994
+   ]
+  ]
+ },
+ {
+  "id": "sem-10",
+  "category": "semantic",
+  "query": "a kind man with a low IQ unwittingly takes part in major moments of American history",
+  "gold": [
+   [
+    "Forrest Gump",
+    1994
+   ]
+  ]
+ },
+ {
+  "id": "sem-11",
+  "category": "semantic",
+  "query": "a young FBI trainee seeks help from an imprisoned cannibal psychiatrist to catch another serial killer",
+  "gold": [
+   [
+    "The Silence of the Lambs",
+    1991
+   ]
+  ]
+ },
+ {
+  "id": "ent-01",
+  "category": "entity",
+  "query": "Christopher Nolan",
+  "auto_rel": {
+   "director": "Christopher Nolan"
+  }
+ },
+ {
+  "id": "ent-02",
+  "category": "entity",
+  "query": "Quentin Tarantino",
+  "auto_rel": {
+   "director": "Quentin Tarantino"
+  }
+ },
+ {
+  "id": "ent-03",
+  "category": "entity",
+  "query": "Bong Joon-ho",
+  "auto_rel": {
+   "director": "Bong Joon-ho"
+  }
+ },
+ {
+  "id": "ent-04",
+  "category": "entity",
+  "query": "Hayao Miyazaki",
+  "auto_rel": {
+   "director": "Hayao Miyazaki"
+  }
+ },
+ {
+  "id": "ent-05",
+  "category": "entity",
+  "query": "Park Chan-wook",
+  "auto_rel": {
+   "director": "Park Chan-wook"
+  }
+ },
+ {
+  "id": "ent-06",
+  "category": "entity",
+  "query": "Tom Hanks",
+  "auto_rel": {
+   "cast": "Tom Hanks"
+  }
+ },
+ {
+  "id": "ent-07",
+  "category": "entity",
+  "query": "Song Kang-ho",
+  "auto_rel": {
+   "cast": "Song Kang-ho"
+  }
+ },
+ {
+  "id": "ent-08",
+  "category": "entity",
+  "query": "Steven Spielberg",
+  "auto_rel": {
+   "director": "Steven Spielberg"
+  },
+  "filters": {
+   "genres": [
+    "Science Fiction"
+   ]
+  }
+ },
+ {
+  "id": "ent-09",
+  "category": "entity",
+  "query": "Tom Hanks",
+  "auto_rel": {
+   "cast": "Tom Hanks"
+  },
+  "filters": {
+   "genres": [
+    "War"
+   ]
+  }
+ },
+ {
+  "id": "fil-01",
+  "category": "filtered",
+  "query": "psychological thriller with a shocking twist ending",
+  "filters": {
+   "year_min": 2010,
+   "year_max": 2019,
+   "min_rating": 7.0,
+   "genres": [
+    "Thriller"
+   ]
+  },
+  "gold": [
+   [
+    "Shutter Island",
+    2010
+   ],
+   [
+    "Gone Girl",
+    2014
+   ],
+   [
+    "Black Swan",
+    2010
+   ]
+  ]
+ },
+ {
+  "id": "fil-02",
+  "category": "filtered",
+  "query": "a story about the gap between rich and poor",
+  "filters": {
+   "language": "ko",
+   "min_rating": 7.0
+  },
+  "gold": [
+   [
+    "Parasite",
+    2019
+   ],
+   [
+    "Burning",
+    2018
+   ]
+  ]
+ },
+ {
+  "id": "fil-03",
+  "category": "filtered",
+  "query": "a haunted house terrorizes the family living in it",
+  "filters": {
+   "year_max": 1989,
+   "genres": [
+    "Horror"
+   ]
+  },
+  "gold": [
+   [
+    "The Shining",
+    1980
+   ],
+   [
+    "Poltergeist",
+    1982
+   ],
+   [
+    "The Amityville Horror",
+    1979
+   ]
+  ]
+ },
+ {
+  "id": "fil-04",
+  "category": "filtered",
+  "query": "soldiers storm the beaches of Normandy",
+  "filters": {
+   "genres": [
+    "War"
+   ]
+  },
+  "gold": [
+   [
+    "Saving Private Ryan",
+    1998
+   ],
+   [
+    "The Longest Day",
+    1962
+   ]
+  ]
+ },
+ {
+  "id": "fil-05",
+  "category": "filtered",
+  "query": "a young lion prince flees after his father's death and returns to reclaim his kingdom",
+  "filters": {
+   "year_min": 1990,
+   "year_max": 1999,
+   "genres": [
+    "Animation"
+   ]
+  },
+  "gold": [
+   [
+    "The Lion King",
+    1994
+   ]
+  ]
+ },
+ {
+  "id": "cult-01",
+  "category": "cult",
+  "query": "a tornado hurls man-eating sharks onto Los Angeles",
+  "gold": [
+   [
+    "Sharknado",
+    2013
+   ]
+  ]
+ },
+ {
+  "id": "cult-02",
+  "category": "cult",
+  "query": "a successful banker is betrayed by his best friend and his fiancée",
+  "gold": [
+   [
+    "The Room",
+    2003
+   ]
+  ]
+ },
+ {
+  "id": "cult-03",
+  "category": "cult",
+  "query": "an FBI agent escorts a witness on a flight where venomous snakes are released",
+  "gold": [
+   [
+    "Snakes on a Plane",
+    2006
+   ]
+  ]
+ },
+ {
+  "id": "cult-04",
+  "category": "cult",
+  "query": "a family vacations in a town of goblins who turn people into plants",
+  "gold": [
+   [
+    "Troll 2",
+    1990
+   ]
+  ]
+ },
+ {
+  "id": "ko-01",
+  "category": "ko",
+  "query": "우주에서 살아남으려는 사람들 이야기",
+  "query_en": "people trying to survive in space",
+  "gold": [
+   [
+    "Gravity",
+    2013
+   ],
+   [
+    "The Martian",
+    2015
+   ],
+   [
+    "Apollo 13",
+    1995
+   ]
+  ]
+ },
+ {
+  "id": "ko-02",
+  "category": "ko",
+  "query": "빙산에 부딪힌 거대한 배 위에서 피어나는 사랑",
+  "query_en": "a love story aboard a giant ship that hits an iceberg",
+  "gold": [
+   [
+    "Titanic",
+    1997
+   ]
+  ]
+ },
+ {
+  "id": "ko-03",
+  "category": "ko",
+  "query": "가난한 가족이 부잣집에 가짜 신분으로 취직하는 이야기",
+  "query_en": "a poor family infiltrates a wealthy household by posing as unrelated workers",
+  "gold": [
+   [
+    "Parasite",
+    2019
+   ]
+  ]
+ },
+ {
+  "id": "ko-04",
+  "category": "ko",
+  "query": "해변 마을을 공격하는 거대한 상어를 잡으러 나서는 사람들",
+  "query_en": "men set out to hunt a giant shark attacking a beach town",
+  "gold": [
+   [
+    "Jaws",
+    1975
+   ]
+  ]
+ },
+ {
+  "id": "ko-05",
+  "category": "ko",
+  "query": "사람이 없을 때 몰래 살아 움직이는 장난감들",
+  "query_en": "toys that secretly come to life when humans are away",
+  "gold": [
+   [
+    "Toy Story",
+    1995
+   ],
+   [
+    "Toy Story 2",
+    1999
+   ],
+   [
+    "Toy Story 3",
+    2010
+   ]
+  ]
+ },
+ {
+  "id": "ko-06",
+  "category": "ko",
+  "query": "죽어가는 지구를 떠나 웜홀을 통과해 새로운 행성을 찾는 우주비행사들",
+  "query_en": "astronauts travel through a wormhole to find a new planet as Earth is dying",
+  "gold": [
+   [
+    "Interstellar",
+    2014
+   ]
+  ]
+ },
+ {
+  "id": "ko-07",
+  "category": "ko",
+  "query": "현실이 사실은 기계가 만든 가상 세계임을 알게 된 해커",
+  "query_en": "a hacker discovers that reality is a simulation created by machines",
+  "gold": [
+   [
+    "The Matrix",
+    1999
+   ]
+  ]
+ },
+ {
+  "id": "ko-08",
+  "category": "ko",
+  "query": "잃어버린 아들을 찾아 바다를 가로지르는 광대물고기 아빠",
+  "query_en": "a clownfish father crosses the ocean to find his lost son",
+  "gold": [
+   [
+    "Finding Nemo",
+    2003
+   ]
+  ]
+ }
+]

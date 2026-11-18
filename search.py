@@ -91,11 +91,14 @@ def parse_query(question: str, client=None) -> tuple[str, Filters]:
 # ----------------------------------------------------------------------------
 # 2) 검색기
 # ----------------------------------------------------------------------------
-def rrf(rank_lists: list[list[int]], k: int = C.RRF_K) -> list[tuple[int, float]]:
+def rrf(rank_lists: list[list[int]], weights: list[float] | None = None,
+        k: int = C.RRF_K) -> list[tuple[int, float]]:
+    """가중 RRF: score(d) = sum_i w_i / (k + rank_i(d))"""
+    weights = weights or [1.0] * len(rank_lists)
     scores: dict[int, float] = {}
-    for lst in rank_lists:
+    for lst, w in zip(rank_lists, weights):
         for rank, _id in enumerate(lst):
-            scores[_id] = scores.get(_id, 0.0) + 1.0 / (k + rank + 1)
+            scores[_id] = scores.get(_id, 0.0) + w / (k + rank + 1)
     return sorted(scores.items(), key=lambda x: -x[1])
 
 
@@ -111,6 +114,12 @@ class HybridSearcher:
         corpus = pd.read_parquet(C.CORPUS_PATH).set_index("id", drop=False)
         self.df = corpus.loc[ids].reset_index(drop=True)
         self.genre_sets = [set(split_genres(g)) for g in self.df["genres"]]
+        self.by_id = self.df.set_index("id", drop=False)
+
+        # 품질 사전점수(0~1): 평점/투표수의 코퍼스 내 백분위 평균
+        rating = self.df["rating"].fillna(self.df["rating"].median())
+        pct = (rating.rank(pct=True) + self.df["vote_count"].rank(pct=True)) / 2
+        self.prior_by_id = dict(zip(self.df["id"].astype(int), pct.to_numpy()))
 
         if model is None:
             from sentence_transformers import SentenceTransformer
@@ -178,27 +187,50 @@ class HybridSearcher:
         order = np.argsort(-scores)[:n]
         return [int(self.df["id"].iat[i]) for i in order if scores[i] > 0]
 
-    # ---- 메인 ----
-    def search(self, query: str, filters: Filters | None = None, k: int = 10,
-               mode: str = "hybrid", pool: int = C.POOL_SIZE) -> list[dict]:
-        """mode: 'hybrid' | 'vector' | 'bm25'  (평가 때 비교용)"""
+    # ---- 후보 검색 / 결합 / 메인 ----
+    def retrieve(self, query: str, filters: Filters | None = None,
+                 pool: int = C.POOL_SIZE, use_vec: bool = True,
+                 use_bm25: bool = True) -> tuple[list[int], list[int]]:
+        """각 검색기의 후보 id 목록(순위순). 평가 때 한 번만 돌리고 결합만 바꿔 보기 위해 분리."""
         filters = filters or Filters()
         where, mask = self.build_where(filters), self.build_mask(filters)
+        vec = self._vector(query, where, pool) if use_vec else []
+        bm = self._bm25(query, mask, pool) if use_bm25 else []
+        return vec, bm
 
-        vec = self._vector(query, where, pool) if mode in ("hybrid", "vector") else []
-        bm = self._bm25(query, mask, pool) if mode in ("hybrid", "bm25") else []
-
+    def fuse(self, vec: list[int], bm: list[int], mode: str = "hybrid",
+             w_vec: float = 1.0, w_bm25: float = 1.0,
+             quality: float = 0.0) -> list[tuple[int, float]]:
+        """mode: hybrid | vector | bm25.
+        quality > 0 이면 최종점수 = (RRF점수/최고점수) + quality * 품질사전점수"""
         if mode == "vector":
-            ranked = [(i, 0.0) for i in vec]
+            lists, ws = [vec], [w_vec]
         elif mode == "bm25":
-            ranked = [(i, 0.0) for i in bm]
+            lists, ws = [bm], [w_bm25]
         else:
-            ranked = rrf([vec, bm])
+            lists, ws = [vec, bm], [w_vec, w_bm25]
+        ranked = rrf(lists, ws)
+        if quality and ranked:
+            top = ranked[0][1]
+            ranked = sorted(
+                ((i, sc / top + quality * self.prior_by_id[i]) for i, sc in ranked),
+                key=lambda x: -x[1],
+            )
+        return ranked
 
-        by_id = self.df.set_index("id", drop=False)
+    def search(self, query: str, filters: Filters | None = None, k: int = 10,
+               mode: str = "hybrid", pool: int = C.POOL_SIZE,
+               w_vec: float = 1.0, w_bm25: float = 1.0,
+               quality: float = 0.0) -> list[dict]:
+        """mode: 'hybrid' | 'vector' | 'bm25'"""
+        vec, bm = self.retrieve(query, filters, pool,
+                                use_vec=mode in ("hybrid", "vector"),
+                                use_bm25=mode in ("hybrid", "bm25"))
+        ranked = self.fuse(vec, bm, mode, w_vec, w_bm25, quality)
+
         out = []
         for _id, score in ranked[:k]:
-            r = by_id.loc[_id]
+            r = self.by_id.loc[_id]
             out.append({
                 "id": int(_id), "title": r["title"], "year": int(r["year"]),
                 "rating": None if pd.isna(r["rating"]) else float(r["rating"]),
