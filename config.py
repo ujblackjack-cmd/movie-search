@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
-
+from dotenv import load_dotenv
+load_dotenv() 
 # ---- 경로 ----
 DATA_CSV = Path("data/TMDB_all_movies.csv")
 OUT_DIR = Path("artifacts")

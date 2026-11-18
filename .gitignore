@@ -7,3 +7,5 @@ __pycache__/
 # 데이터와 산출물 (코드로 재생성 가능)
 data/
 artifacts/
+README.md
+.vscode/settings.json
