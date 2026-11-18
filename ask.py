@@ -6,9 +6,9 @@
 """
 import argparse
 
-import anthropic
+import argparse
 
-import config as C
+from llm import generate
 from search import HybridSearcher, parse_query
 
 ANSWER_SYSTEM = """You are a movie recommendation assistant.
@@ -38,8 +38,7 @@ def main():
     ap.add_argument("--mode", default="hybrid", choices=["hybrid", "vector", "bm25"])
     args = ap.parse_args()
 
-    client = anthropic.Anthropic()
-    query, filters = parse_query(args.question, client)
+    query, filters = parse_query(args.question)
     print(f"[검색어] {query}\n[필터] {filters}\n")
 
     searcher = HybridSearcher()
@@ -52,12 +51,11 @@ def main():
         print(f"- {r['title']} ({r['year']})  vec#{r['vec_rank']} bm25#{r['bm25_rank']}")
     print()
 
-    resp = client.messages.create(
-        model=C.LLM_MODEL, max_tokens=900, system=ANSWER_SYSTEM,
-        messages=[{"role": "user",
-                   "content": f"Question: {args.question}\n\nSearch results:\n{format_context(results)}"}],
-    )
-    print(resp.content[0].text)
+    print(generate(
+        ANSWER_SYSTEM,
+        f"Question: {args.question}\n\nSearch results:\n{format_context(results)}",
+        max_tokens=2048,
+    ))
 
 
 if __name__ == "__main__":

@@ -21,8 +21,11 @@ EMBED_MODEL = os.getenv("EMBED_MODEL", "BAAI/bge-m3")
 EMBED_BATCH = 32
 MAX_SEQ_LEN = 512
 
-# ---- LLM (질문 파싱 + 답변 생성). ANTHROPIC_API_KEY 환경변수 필요 ----
-LLM_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-haiku-5-5")
+# ---- LLM (질문 파싱 + 답변 생성) ----
+# gemini(기본): GEMINI_API_KEY 환경변수 / anthropic: ANTHROPIC_API_KEY 환경변수
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")   # python check_gemini.py --list 로 확인
+LLM_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-haiku-5-5")        # provider=anthropic 일 때만 사용
 
 # ---- 검색 ----
 POOL_SIZE = 50     # 각 검색기에서 가져올 후보 수

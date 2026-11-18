@@ -34,6 +34,8 @@ def build_metadata(r: dict) -> dict:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--bm25-only", action="store_true",
+                    help="임베딩/Chroma 는 그대로 두고 BM25 인덱스만 다시 만든다 (토크나이저 변경 시)")
     args = ap.parse_args()
 
     df = pd.read_parquet(C.CORPUS_PATH)
@@ -41,6 +43,12 @@ def main():
         df = df.head(args.limit).reset_index(drop=True)
     rows = df.to_dict("records")
     docs = [r["doc"] for r in rows]
+    if args.bm25_only:
+        bm25 = BM25Okapi([tokenize(d) for d in docs])
+        with open(C.BM25_PATH, "wb") as f:
+            pickle.dump({"bm25": bm25, "ids": [int(r["id"]) for r in rows]}, f)
+        print(f"BM25 만 다시 생성 ({len(rows):,}편). Chroma 는 그대로입니다.")
+        return
     print(f"{len(rows):,}편 인덱싱 / 임베딩 모델: {C.EMBED_MODEL}")
 
     # ---- 벡터 인덱스 ----

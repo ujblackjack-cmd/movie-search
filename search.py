@@ -58,19 +58,13 @@ Rules:
 - Use null / [] when not specified. Never invent constraints."""
 
 
-def parse_query(question: str, client=None) -> tuple[str, Filters]:
-    """실패하면 필터 없이 원문으로 검색하도록 안전하게 폴백."""
+def parse_query(question: str, generate_fn=None) -> tuple[str, Filters]:
+    """실패하면 필터 없이 원문으로 검색하도록 안전하게 폴백.
+    generate_fn(system, user, max_tokens) -> str  (기본: llm.generate, 테스트 때 주입 가능)"""
     try:
-        if client is None:
-            import anthropic
-            client = anthropic.Anthropic()
-        resp = client.messages.create(
-            model=C.LLM_MODEL,
-            max_tokens=400,
-            system=PARSE_SYSTEM,
-            messages=[{"role": "user", "content": question}],
-        )
-        text = resp.content[0].text
+        if generate_fn is None:
+            from llm import generate as generate_fn
+        text = generate_fn(PARSE_SYSTEM, question, 1024)
         data = json.loads(text[text.index("{") : text.rindex("}") + 1])
         f = data.get("filters") or {}
         genres = [g for g in (f.get("genres") or []) if g in TMDB_GENRES]

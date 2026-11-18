@@ -31,7 +31,9 @@ METHODS = {
     "bm25":        dict(mode="bm25"),
     "hybrid":      dict(mode="hybrid"),                          # 현재 방식(동일 가중 RRF)
     "hybrid_w":    dict(mode="hybrid", w_bm25=0.5),              # BM25 비중 절반
-    "hybrid_q":    dict(mode="hybrid", quality=0.3),             # 평점/투표수 가산
+    "hybrid_q15":  dict(mode="hybrid", quality=0.15),            # 평점/투표수 가산 (약)
+    "hybrid_q":    dict(mode="hybrid", quality=0.3),             # 평점/투표수 가산 (중)
+    "hybrid_q50":  dict(mode="hybrid", quality=0.5),             # 평점/투표수 가산 (강)
     "hybrid_w_q":  dict(mode="hybrid", w_bm25=0.5, quality=0.3),
 }
 METRICS = ["hit", "recall", "mrr", "ndcg"]
