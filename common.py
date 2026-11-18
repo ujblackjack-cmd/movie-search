@@ -26,5 +26,6 @@ why how not no so if then than too very can could will would shall should may mi
 s t about after before again all any both each more most other some such only own same""".split())
 
 
-def tokenize(text: str) -> list[str]:
-    return re.findall(r"\w+", text.lower())
+def tokenize(text: str, drop_stop: bool = True) -> list[str]:
+    toks = re.findall(r"\w+", text.lower())
+    return [t for t in toks if t not in STOPWORDS] if drop_stop else toks
